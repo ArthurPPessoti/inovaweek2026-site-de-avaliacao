@@ -1,0 +1,1507 @@
+
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Avaliação InovaWeek 2026</title>
+  <meta name="theme-color" content="#050505" />
+  <meta name="color-scheme" content="dark light">
+
+  <style>
+    :root{
+      --black:#050505;
+      --black-2:#111111;
+      --white:#f7f7f2;
+      --cyan:#36bced;
+      --pink:#e81463;
+      --yellow:#f5d318;
+      --orange:#f6a044;
+      --blue:#1738f4;
+
+      --bg:var(--black);
+      --surface:#0d0d0d;
+      --surface-2:#151515;
+      --text:var(--white);
+      --muted:#a9a9a4;
+      --line:rgba(255,255,255,.20);
+      --line-strong:rgba(255,255,255,.48);
+      --focus:var(--cyan);
+      --shadow:0 18px 50px rgba(0,0,0,.38);
+
+      --radius:18px;
+      --radius-sm:12px;
+      --display-font:Impact, Haettenschweiler, "Arial Narrow Bold", "Arial Black", sans-serif;
+      --body-font:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    html[data-theme="light"]{
+      --bg:#eeeeea;
+      --surface:#ffffff;
+      --surface-2:#f7f7f2;
+      --text:#070707;
+      --muted:#5f5f5b;
+      --line:rgba(0,0,0,.17);
+      --line-strong:rgba(0,0,0,.52);
+      --shadow:0 18px 44px rgba(0,0,0,.12);
+    }
+
+    *{box-sizing:border-box}
+    html{min-height:100%; background:var(--bg)}
+    body{
+      min-height:100%;
+      margin:0;
+      color:var(--text);
+      background:transparent;
+      font-family:var(--body-font);
+      line-height:1.45;
+      overflow-x:hidden;
+      transition:background-color .18s ease,color .18s ease;
+    }
+
+    button,input,textarea,select{font:inherit}
+    button{touch-action:manipulation}
+    button, .tile{-webkit-tap-highlight-color:transparent}
+
+    /* Fundo inspirado nos grafismos do moodboard, mas discreto para não atrapalhar a leitura. */
+    #bg{
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      overflow:hidden;
+      background:
+        linear-gradient(rgba(54,188,237,.10) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(54,188,237,.10) 1px, transparent 1px),
+        radial-gradient(circle at 82% 14%, rgba(54,188,237,.15), transparent 26rem),
+        radial-gradient(circle at 7% 88%, rgba(232,20,99,.12), transparent 24rem),
+        radial-gradient(circle at 50% 120%, rgba(23,56,244,.10), transparent 30rem),
+        linear-gradient(180deg, rgba(5,5,5,.15), rgba(5,5,5,.04) 34%, rgba(5,5,5,0) 100%),
+        var(--bg);
+      background-size:28px 28px,28px 28px,auto,auto,auto,auto,auto;
+      opacity:1;
+    }
+
+    #bg::before{
+      content:"";
+      position:absolute;
+      width:220px;
+      height:220px;
+      right:-96px;
+      top:16vh;
+      border:1px solid var(--line);
+      border-radius:50%;
+      box-shadow:
+        0 0 0 28px transparent,
+        0 0 0 29px var(--line),
+        0 0 0 58px transparent,
+        0 0 0 59px var(--line);
+      opacity:.42;
+    }
+
+    #bg::after{
+      content:"";
+      position:absolute;
+      left:-34px;
+      bottom:9vh;
+      width:180px;
+      height:62px;
+      background:
+        repeating-linear-gradient(
+          135deg,
+          var(--text) 0 10px,
+          transparent 10px 20px
+        );
+      opacity:.09;
+      transform:skewX(-12deg);
+    }
+
+    .wrap{
+      position:relative;
+      z-index:2;
+      width:min(100% - 24px, 980px);
+      margin:0 auto;
+      padding:20px 0 max(28px, env(safe-area-inset-bottom));
+    }
+
+    .card{
+      position:relative;
+      overflow:hidden;
+      background:color-mix(in srgb, var(--surface) 94%, transparent);
+      border:1px solid var(--line-strong);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:0 auto auto 0;
+      width:100%;
+      height:5px;
+      background:
+        linear-gradient(
+          90deg,
+          var(--cyan) 0 55%,
+          var(--text) 55% 68%,
+          var(--yellow) 68% 78%,
+          var(--pink) 78% 100%
+        );
+    }
+
+    .card::after{
+      content:"";
+      position:absolute;
+      width:76px;
+      height:76px;
+      top:22px;
+      right:-38px;
+      border:1px solid var(--line);
+      transform:rotate(45deg);
+      pointer-events:none;
+      opacity:.45;
+    }
+
+    #viewLogin{padding:24px}
+    #viewDias,#viewEstandes,#viewForm{padding:20px}
+
+    .eyebrow{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin:0 0 10px;
+      font-size:.72rem;
+      font-weight:900;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:var(--cyan);
+    }
+    .eyebrow::before{
+      content:"";
+      width:26px;
+      height:4px;
+      background:var(--cyan);
+      box-shadow:10px 7px 0 -1px var(--cyan);
+      transform:skewX(-24deg);
+    }
+
+    h1,h2,h3,p{margin-top:0}
+    h1,h2,h3{
+      font-family:var(--display-font);
+      text-transform:uppercase;
+      font-weight:900;
+      line-height:.96;
+      letter-spacing:.015em;
+    }
+
+    h1{
+      margin-bottom:10px;
+      font-size:clamp(2.55rem, 11vw, 5.4rem);
+      max-width:780px;
+    }
+
+    h2{
+      font-size:clamp(1.9rem, 7vw, 3.5rem);
+      margin:0;
+    }
+
+    .accent-word{color:var(--cyan)}
+
+    .subtitle{
+      max-width:620px;
+      margin:0;
+      color:var(--muted);
+      font-size:.98rem;
+    }
+
+    .brand-lockup{
+      display:grid;
+      gap:18px;
+      margin-bottom:28px;
+    }
+
+    .event-stamp{
+      display:inline-flex;
+      align-items:center;
+      width:max-content;
+      max-width:100%;
+      border:1px solid var(--line-strong);
+      background:var(--text);
+      color:var(--bg);
+      font-family:var(--display-font);
+      font-size:1.04rem;
+      line-height:1;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+      padding:7px 10px;
+      box-shadow:8px 8px 0 var(--cyan);
+    }
+
+    .spark{
+      display:inline-block;
+      width:16px;
+      height:16px;
+      margin-right:8px;
+      background:var(--cyan);
+      clip-path:polygon(50% 0,61% 36%,100% 50%,61% 64%,50% 100%,39% 64%,0 50%,39% 36%);
+      vertical-align:-2px;
+    }
+
+    .topbar,.footer{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .topbar{
+      align-items:flex-start;
+      margin-bottom:22px;
+    }
+
+    .section-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:12px;
+    }
+
+    .meta-chip{
+      display:inline-flex;
+      align-items:center;
+      min-height:30px;
+      padding:5px 9px;
+      border:1px solid var(--line);
+      color:var(--muted);
+      background:var(--surface-2);
+      font-size:.76rem;
+      font-weight:800;
+      letter-spacing:.02em;
+      border-radius:999px;
+      max-width:100%;
+      overflow-wrap:anywhere;
+    }
+
+    .meta-chip:empty{display:none}
+
+    .muted{color:var(--muted);font-size:.9rem}
+    .err{color:#ff667f;font-weight:700}
+    .ok{color:var(--cyan)}
+    .hidden{display:none!important}
+
+    /* Login */
+    .login-panel{
+      display:grid;
+      gap:14px;
+    }
+
+    .field{
+      display:grid;
+      gap:7px;
+    }
+
+    .field-label{
+      font-size:.75rem;
+      line-height:1;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      font-weight:900;
+      color:var(--muted);
+    }
+
+    input,textarea,select{
+      width:100%;
+      min-height:54px;
+      border:1px solid var(--line-strong);
+      border-radius:10px;
+      padding:14px 15px;
+      color:var(--text);
+      background:var(--surface-2);
+      outline:none;
+      transition:border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+    }
+
+    input::placeholder,textarea::placeholder{color:color-mix(in srgb,var(--muted) 80%,transparent)}
+
+    input:focus,textarea:focus,select:focus{
+      border-color:var(--focus);
+      box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 24%,transparent);
+    }
+
+    textarea{
+      min-height:112px;
+      resize:vertical;
+    }
+
+    button{
+      min-height:52px;
+      border:1px solid var(--line-strong);
+      border-radius:10px;
+      padding:12px 16px;
+      color:var(--text);
+      background:var(--surface-2);
+      cursor:pointer;
+      font-weight:900;
+      transition:transform .12s ease, box-shadow .12s ease, background-color .12s ease, opacity .12s ease;
+    }
+
+    button:hover{transform:translateY(-1px)}
+    button:active{transform:translateY(1px)}
+    button:focus-visible{
+      outline:3px solid color-mix(in srgb,var(--focus) 60%,transparent);
+      outline-offset:2px;
+    }
+
+    button.primary{
+      position:relative;
+      overflow:hidden;
+      border-color:var(--cyan);
+      color:#050505;
+      background:var(--cyan);
+      text-transform:uppercase;
+      letter-spacing:.07em;
+      box-shadow:5px 5px 0 color-mix(in srgb,var(--text) 95%,transparent);
+    }
+
+    button.primary::after{
+      content:"›";
+      position:absolute;
+      right:15px;
+      top:50%;
+      transform:translateY(-53%);
+      font-size:1.65rem;
+      font-weight:500;
+    }
+
+    button.secondary{
+      background:transparent;
+      border-color:var(--pink);
+      color:var(--pink);
+    }
+
+    button:disabled{
+      cursor:not-allowed;
+      opacity:.42;
+      transform:none!important;
+      box-shadow:none!important;
+    }
+
+    .tbtn{
+      flex:0 0 48px;
+      width:48px;
+      min-height:48px;
+      height:48px;
+      padding:0;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:50%;
+      background:var(--surface-2);
+    }
+
+    .tbtn svg{width:20px;height:20px}
+    .tbtn .sun{display:none}
+    html[data-theme="light"] .tbtn .sun{display:block}
+    html[data-theme="light"] .tbtn .moon{display:none}
+
+    .controls{
+      display:grid;
+      gap:14px;
+      grid-template-columns:1fr;
+    }
+
+    #loginMsg{min-height:1.2em;margin-top:10px}
+
+    /* Listas de dias/estandes */
+    .grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+    }
+
+    .tile{
+      position:relative;
+      min-height:88px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      border:1px solid var(--line);
+      border-left:5px solid var(--cyan);
+      border-radius:12px;
+      padding:16px;
+      background:var(--surface-2);
+      cursor:pointer;
+      overflow:hidden;
+      transition:transform .14s ease,border-color .14s ease,box-shadow .14s ease;
+    }
+
+    .tile::after{
+      content:"";
+      position:absolute;
+      right:-20px;
+      bottom:-28px;
+      width:72px;
+      height:72px;
+      border:1px solid var(--line);
+      transform:rotate(45deg);
+      opacity:.55;
+    }
+
+    .tile:hover{
+      transform:translateY(-2px);
+      border-color:var(--cyan);
+      box-shadow:0 10px 24px rgba(0,0,0,.16);
+    }
+
+    #diasWrap .tile{
+      border-left-color:var(--cyan);
+      background:
+        linear-gradient(90deg, color-mix(in srgb,var(--cyan) 9%,transparent), transparent 40%),
+        var(--surface-2);
+    }
+
+    #estandesWrap .tile{
+      min-height:80px;
+      border-left-color:var(--text);
+    }
+
+    .status{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:5px 9px;
+      border-radius:999px!important;
+      font-size:.72rem!important;
+      font-weight:900;
+      line-height:1;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      background:transparent;
+    }
+
+    #estandesWrap .tile:has(.status[style*="#0c9143"]){
+      border-left-color:var(--cyan);
+      opacity:.68!important;
+    }
+
+    #estandesWrap .tile:has(.status[style*="#b26a00"]){
+      border-left-color:var(--yellow);
+    }
+
+    #estandesWrap .status[style*="#0c9143"]{
+      color:var(--cyan)!important;
+      border-color:var(--cyan)!important;
+    }
+
+    #estandesWrap .status[style*="#b26a00"]{
+      color:var(--yellow)!important;
+      border-color:var(--yellow)!important;
+    }
+
+    #sync1,#sync2{
+      margin-top:14px;
+      text-align:right;
+      font-size:.75rem;
+      opacity:.72;
+    }
+
+    /* Formulário de avaliação */
+    #viewForm{overflow:visible}
+
+    #formWrap{
+      display:grid;
+      gap:14px;
+      padding-bottom:8px;
+    }
+
+    .criterion{
+      position:relative;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:var(--surface-2);
+      padding:16px;
+      overflow:hidden;
+    }
+
+    .criterion::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:0;
+      width:42px;
+      height:4px;
+      background:var(--cyan);
+    }
+
+    .crit-title{
+      margin:0 0 14px;
+      padding-right:18px;
+      font-family:var(--display-font);
+      text-align:left;
+      text-transform:uppercase;
+      font-size:1.42rem;
+      line-height:1;
+      letter-spacing:.03em;
+    }
+
+    .btn-grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:9px;
+    }
+
+    .btn-choice{
+      position:relative;
+      min-height:58px;
+      width:100%;
+      padding:12px 14px 12px 43px;
+      text-align:left;
+      font-size:.93rem;
+      line-height:1.3;
+      font-weight:700;
+      color:var(--text);
+      background:transparent;
+      border:1px solid var(--line);
+      box-shadow:none;
+    }
+
+    .btn-choice::before{
+      content:"";
+      position:absolute;
+      left:14px;
+      top:50%;
+      width:15px;
+      height:15px;
+      border:2px solid var(--muted);
+      border-radius:50%;
+      transform:translateY(-50%);
+    }
+
+    .btn-choice:hover{
+      border-color:var(--cyan);
+      background:color-mix(in srgb,var(--cyan) 7%,transparent);
+      box-shadow:none;
+    }
+
+    .btn-choice.selected{
+      color:#050505;
+      border-color:var(--cyan);
+      background:var(--cyan);
+      box-shadow:4px 4px 0 var(--text);
+    }
+
+    .btn-choice.selected::before{
+      border-color:#050505;
+      background:#050505;
+      box-shadow:inset 0 0 0 3px var(--cyan);
+    }
+
+    #viewForm > .footer:last-child{
+      position:sticky;
+      z-index:30;
+      bottom:max(10px, env(safe-area-inset-bottom));
+      margin:14px -8px -8px;
+      padding:10px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:color-mix(in srgb,var(--surface) 92%,transparent);
+      backdrop-filter:blur(14px);
+      box-shadow:0 12px 36px rgba(0,0,0,.28);
+    }
+
+    #btnEnviar{min-width:154px}
+
+    .footer{
+      margin-top:14px;
+      flex-wrap:wrap;
+    }
+
+    .row{
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    /* Toast */
+    .toast{
+      position:fixed;
+      z-index:100;
+      left:50%;
+      bottom:max(20px, env(safe-area-inset-bottom));
+      width:min(calc(100% - 28px), 460px);
+      transform:translate(-50%, 18px);
+      opacity:0;
+      pointer-events:none;
+      padding:13px 16px;
+      border:1px solid var(--cyan);
+      border-radius:10px;
+      color:#050505;
+      background:var(--cyan);
+      font-weight:900;
+      text-align:center;
+      box-shadow:0 14px 38px rgba(0,0,0,.30);
+      transition:opacity .18s ease, transform .18s ease;
+    }
+
+    .toast.show{
+      display:block;
+      opacity:1;
+      transform:translate(-50%, 0);
+    }
+
+    /* Splash sem depender de imagem externa. */
+    .splash{
+      position:fixed;
+      inset:0;
+      z-index:9999;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#050505;
+      transition:opacity .35s ease;
+    }
+
+    .splash.hide{opacity:0;pointer-events:none}
+
+    .splash-mark{
+      width:min(86vw, 460px);
+      border:2px solid #f7f7f2;
+      padding:18px 20px;
+      color:#f7f7f2;
+      text-align:center;
+      font-family:var(--display-font);
+      font-size:clamp(2.2rem, 12vw, 5rem);
+      line-height:.82;
+      text-transform:uppercase;
+      letter-spacing:.02em;
+      box-shadow:10px 10px 0 var(--cyan);
+    }
+
+    .splash-mark small{
+      display:block;
+      margin-top:12px;
+      font-family:var(--body-font);
+      font-size:.72rem;
+      line-height:1.2;
+      letter-spacing:.18em;
+      font-weight:900;
+    }
+
+    .brand-mini{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-bottom:8px;
+      color:var(--cyan);
+      font-size:.72rem;
+      font-weight:900;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+
+    @media (min-width:640px){
+      .wrap{padding-top:32px}
+      #viewLogin{padding:34px}
+      #viewDias,#viewEstandes,#viewForm{padding:28px}
+      .controls{grid-template-columns:1.25fr .78fr auto;align-items:end}
+      .controls .field{min-width:0}
+      .controls button{min-width:132px}
+      .grid.cols-3{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .btn-grid.two-cols{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .criterion{padding:18px}
+      .btn-choice{min-height:66px}
+    }
+
+    @media (min-width:940px){
+      .grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    }
+
+    @media (max-width:639px){
+      .wrap{width:min(100% - 16px, 980px);padding-top:8px}
+      .card{border-radius:14px}
+      #viewLogin,#viewDias,#viewEstandes,#viewForm{padding:18px 14px}
+      .topbar{margin-bottom:18px}
+      h1{font-size:clamp(2.65rem, 16vw, 4.25rem)}
+      h2{font-size:clamp(2rem, 11vw, 3rem)}
+      .event-stamp{box-shadow:5px 5px 0 var(--cyan)}
+      .footer{align-items:stretch}
+      #viewDias > .footer:first-child,
+      #viewEstandes > .footer:first-child,
+      #viewForm > .footer:first-child{
+        align-items:flex-start;
+      }
+      #viewDias > .footer:first-child > .row,
+      #viewEstandes > .footer:first-child > .row,
+      #viewForm > .footer:first-child > .row{
+        margin-left:auto;
+      }
+      #viewForm > .footer:last-child{
+        flex-direction:column;
+      }
+      #btnEnviar{width:100%}
+      .btn-choice.selected{box-shadow:3px 3px 0 var(--text)}
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{
+        scroll-behavior:auto!important;
+        transition:none!important;
+        animation:none!important;
+      }
+    }
+
+    /* Loader global */
+    .loader-overlay{
+      position:fixed;
+      inset:0;
+      z-index:10050;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      background:rgba(5,5,5,.66);
+      backdrop-filter:blur(10px);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .18s ease;
+    }
+
+    .loader-overlay.show{
+      opacity:1;
+      pointer-events:auto;
+    }
+
+    .loader-panel{
+      position:relative;
+      width:min(100%, 420px);
+      border:1px solid var(--line-strong);
+      border-radius:16px;
+      background:color-mix(in srgb, var(--surface) 95%, transparent);
+      box-shadow:0 18px 50px rgba(0,0,0,.38);
+      overflow:hidden;
+      padding:24px 20px 20px;
+    }
+
+    .loader-panel::before{
+      content:"";
+      position:absolute;
+      inset:0 auto auto 0;
+      width:100%;
+      height:5px;
+      background:
+        linear-gradient(
+          90deg,
+          var(--cyan) 0 52%,
+          var(--text) 52% 68%,
+          var(--yellow) 68% 79%,
+          var(--pink) 79% 100%
+        );
+    }
+
+    .loader-panel::after{
+      content:"";
+      position:absolute;
+      right:-28px;
+      top:18px;
+      width:60px;
+      height:60px;
+      transform:rotate(45deg);
+      border:1px solid var(--line);
+      opacity:.48;
+    }
+
+    .loader-mini{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-bottom:12px;
+      color:var(--cyan);
+      font-size:.72rem;
+      font-weight:900;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+
+    .loader-mini::before{
+      content:"";
+      width:20px;
+      height:4px;
+      background:var(--cyan);
+      box-shadow:8px 6px 0 -1px var(--cyan);
+      transform:skewX(-24deg);
+    }
+
+    .loader-box{
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+
+    .loader-core{
+      position:relative;
+      flex:0 0 74px;
+      width:74px;
+      height:74px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      background:var(--surface-2);
+      overflow:hidden;
+    }
+
+    .loader-core::before,
+    .loader-core::after{
+      content:"";
+      position:absolute;
+      inset:11px;
+      border:1px solid color-mix(in srgb, var(--cyan) 45%, transparent);
+      border-radius:50%;
+      animation:loaderOrbit 1.5s linear infinite;
+    }
+
+    .loader-core::after{
+      inset:20px;
+      border-color:color-mix(in srgb, var(--pink) 50%, transparent);
+      animation-duration:1.05s;
+      animation-direction:reverse;
+    }
+
+    .loader-star{
+      position:relative;
+      width:28px;
+      height:28px;
+      background:var(--cyan);
+      clip-path:polygon(50% 0,61% 36%,100% 50%,61% 64%,50% 100%,39% 64%,0 50%,39% 36%);
+      animation:loaderPulse .9s ease-in-out infinite alternate;
+      z-index:2;
+    }
+
+    .loader-texts{
+      min-width:0;
+      display:grid;
+      gap:6px;
+    }
+
+    .loader-title{
+      margin:0;
+      font-family:var(--display-font);
+      font-size:clamp(1.4rem, 5vw, 2rem);
+      line-height:.92;
+      text-transform:uppercase;
+      letter-spacing:.02em;
+    }
+
+    .loader-desc{
+      margin:0;
+      color:var(--muted);
+      font-size:.94rem;
+      line-height:1.4;
+    }
+
+    .loader-bar{
+      position:relative;
+      height:9px;
+      margin-top:16px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      overflow:hidden;
+      background:var(--surface-2);
+    }
+
+
+    .loader-fill{
+      position:relative;
+      display:block;
+      width:0%;
+      height:9px;
+      border-radius:999px;
+      background:linear-gradient(
+        90deg,
+        var(--cyan) 0%,
+        var(--cyan) 42%,
+        var(--yellow) 72%,
+        var(--pink) 100%
+      );
+      box-shadow:0 0 16px rgba(54,188,237,.34);
+      transition:width .10s linear;
+      will-change:width;
+    }
+
+    
+
+    .loading-stage{
+      display:grid;
+      place-items:center;
+      min-height:260px;
+      border:1px dashed var(--line);
+      border-radius:16px;
+      background:color-mix(in srgb, var(--surface-2) 88%, transparent);
+      padding:18px;
+      text-align:center;
+    }
+
+    .loading-stage .loader-core{
+      margin:0 auto 14px;
+    }
+
+    .loading-stage .loader-title{
+      margin-bottom:6px;
+    }
+
+    @keyframes loaderPulse{
+      from{transform:scale(.84);filter:drop-shadow(0 0 0 rgba(54,188,237,.2))}
+      to{transform:scale(1);filter:drop-shadow(0 0 14px rgba(54,188,237,.42))}
+    }
+
+    @keyframes loaderOrbit{
+      from{transform:rotate(0deg)}
+      to{transform:rotate(360deg)}
+    }
+
+
+    @media (max-width:520px){
+      .loader-box{align-items:flex-start}
+      .loader-panel{padding:22px 16px 18px}
+      .loader-core{width:64px;height:64px;flex-basis:64px}
+      .loader-title{font-size:1.5rem}
+    }
+
+  </style>
+</head>
+
+<body>
+  <div id="bg"></div>
+
+  <div id="splash" class="splash" aria-hidden="true">
+    <div class="splash-mark">
+      IN<span style="color:#36bced">✦</span>VA<br>WEEK 26
+      <small>UVV // Avaliação de estandes</small>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <section class="card" id="viewLogin">
+      <div class="brand-lockup">
+        <div class="topbar" style="margin-bottom:0">
+          <div>
+            <div class="eyebrow">UVV · InovaWeek 2026</div>
+            <h1>Avaliação de <span class="accent-word">estandes</span></h1>
+            <p class="subtitle">Acesse com seus dados de avaliador para visualizar os dias e estandes disponíveis.</p>
+          </div>
+
+          <button class="tbtn theme-btn" aria-label="Alternar tema" title="Alternar tema">
+            <svg class="moon" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            <svg class="sun" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"></path>
+              <path d="M12 2v2m0 16v2m10-10h-2M4 12H2m15.364 6.364-1.414-1.414M8.05 8.05 6.636 6.636m0 10.728L8.05 15.95M17.95 8.05l1.414-1.414" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="event-stamp"><span class="spark"></span>Robotic Solutions // 2026</div>
+      </div>
+
+      <div class="controls">
+        <label class="field">
+          <span class="field-label">E-mail institucional</span>
+          <input id="email" placeholder="email@uvv.br" autocomplete="email" inputmode="email" />
+        </label>
+
+        <label class="field">
+          <span class="field-label">Matrícula</span>
+          <input id="matricula" placeholder="Ex.: 202413575" inputmode="numeric" />
+        </label>
+
+        <button class="primary" id="btnLogin">Entrar</button>
+      </div>
+
+      <div id="loginMsg" class="err" aria-live="polite"></div>
+    </section>
+
+    <section class="card hidden" id="viewDias">
+      <div class="footer">
+        <div>
+          <div class="brand-mini"><span class="spark"></span>Área do avaliador</div>
+          <h2>Dias disponíveis</h2>
+          <div class="section-meta">
+            <span class="meta-chip" id="who"></span>
+          </div>
+        </div>
+
+        <div class="row">
+          <button id="btnSair" class="secondary">Sair</button>
+          <button class="tbtn theme-btn" aria-label="Alternar tema" title="Alternar tema">
+            <svg class="moon" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            <svg class="sun" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"></path>
+              <path d="M12 2v2m0 16v2m10-10h-2M4 12H2m15.364 6.364-1.414-1.414M8.05 8.05 6.636 6.636m0 10.728L8.05 15.95M17.95 8.05l1.414-1.414" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div id="diasWrap" class="grid cols-3"></div>
+      <div class="muted" id="sync1"></div>
+    </section>
+
+    <section class="card hidden" id="viewEstandes">
+      <div class="footer">
+        <div>
+          <div class="brand-mini"><span class="spark"></span>Seleção de estande</div>
+          <h2>Estandes · <span class="accent-word" id="diaAtual"></span></h2>
+          <div class="section-meta">
+            <span class="meta-chip" id="who2"></span>
+          </div>
+        </div>
+
+        <div class="row">
+          <button id="btnBackDias">← Voltar</button>
+          <button class="tbtn theme-btn" aria-label="Alternar tema" title="Alternar tema">
+            <svg class="moon" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            <svg class="sun" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"></path>
+              <path d="M12 2v2m0 16v2m10-10h-2M4 12H2m15.364 6.364-1.414-1.414M8.05 8.05 6.636 6.636m0 10.728L8.05 15.95M17.95 8.05l1.414-1.414" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div id="estandesWrap" class="grid cols-3"></div>
+      <div class="muted" id="sync2"></div>
+    </section>
+
+    <section class="card hidden" id="viewForm">
+      <div class="footer">
+        <div>
+          <div class="brand-mini"><span class="spark"></span>Formulário de avaliação</div>
+          <h2>Estande <span class="accent-word" id="estandeAtual"></span></h2>
+          <div class="section-meta">
+            <span class="meta-chip" id="diaAtual2"></span>
+            <span class="meta-chip" id="who3"></span>
+          </div>
+        </div>
+
+        <div class="row">
+          <button id="btnBackEstandes">← Voltar</button>
+          <button class="tbtn theme-btn" aria-label="Alternar tema" title="Alternar tema">
+            <svg class="moon" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            <svg class="sun" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"></path>
+              <path d="M12 2v2m0 16v2m10-10h-2M4 12H2m15.364 6.364-1.414-1.414M8.05 8.05 6.636 6.636m0 10.728L8.05 15.95M17.95 8.05l1.414-1.414" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div id="formWrap"></div>
+
+      <div class="footer">
+        <div id="formMsg" class="err" aria-live="polite"></div>
+        <button class="primary" id="btnEnviar" disabled>Enviar avaliação</button>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const FORCE_API = "https://script.google.com/macros/s/AKfycbx3bzcR2viUx8fJ_e3Ep--lNMX3_vb__V1pdo8p-BiEwrkDZ1vw-m-CDjqMRTLjTRs/exec";
+    const POLL_MS = 7000;
+    const STATE = { api: FORCE_API, user:null, dia:null, estande:null, choices:null, poll:null, formSel:{}, loadingCount:0, loaderProgress:0, loaderTimer:null, loaderFinishTimer:null };
+
+    const $ = s => document.querySelector(s);
+    const qs = o => new URLSearchParams(o).toString();
+
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme_inovaweek', theme);
+    }
+    function initTheme() {
+      const saved = localStorage.getItem('theme_inovaweek');
+      const prefers = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light':'dark';
+      setTheme(saved || prefers);
+      document.querySelectorAll('.theme-btn').forEach(btn=> btn.addEventListener('click', ()=> {
+        const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+        setTheme(cur==='dark' ? 'light':'dark');
+      }));
+    }
+    function withTimeout(promise, ms=15000){
+      return Promise.race([promise, new Promise((_,rej)=> setTimeout(()=>rej(new Error('timeout')), ms))]);
+    }
+    async function apiGet(params){
+      const url = `${STATE.api}?${qs(params)}`; const res = await withTimeout(fetch(url, { method:'GET' })); return res.json();
+    }
+    async function apiPost(data){
+      const body = new URLSearchParams(data);
+      const res = await withTimeout(fetch(STATE.api, { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body }));
+      return res.json();
+    }
+    function show(id){ ['viewLogin','viewDias','viewEstandes','viewForm'].forEach(v=>{ const el=$('#'+v); if(!el)return; if(v===id) el.classList.remove('hidden'); else el.classList.add('hidden'); }); }
+    function startPoll(fn){ stopPoll(); STATE.poll=setInterval(fn,POLL_MS); }
+    function stopPoll(){ if(STATE.poll){ clearInterval(STATE.poll); STATE.poll=null; } }
+    function toast(msg, ms=1600){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=> t.classList.remove('show'), ms); }
+    function setLoaderProgress(value){
+      const fill = $('#loaderFill');
+      const safeValue = Math.max(0, Math.min(100, Number(value) || 0));
+      STATE.loaderProgress = safeValue;
+
+      if(fill){
+        fill.style.width = `${safeValue}%`;
+      }
+    }
+
+    function showLoader(text='Carregando informações...'){
+      const overlay = $('#loader');
+      const textEl = $('#loaderText');
+
+      STATE.loadingCount = (STATE.loadingCount || 0) + 1;
+
+      if(textEl) textEl.textContent = text;
+
+      // Se um loader anterior estava no meio dos 500 ms finais,
+      // cancela o fechamento e inicia este carregamento normalmente.
+      if(STATE.loaderFinishTimer){
+        clearTimeout(STATE.loaderFinishTimer);
+        STATE.loaderFinishTimer = null;
+      }
+
+      if(overlay){
+        overlay.classList.add('show');
+        overlay.setAttribute('aria-hidden','false');
+      }
+
+      // Só reinicia a barra no primeiro carregamento da pilha.
+      if(STATE.loadingCount === 1){
+        if(STATE.loaderTimer){
+          clearInterval(STATE.loaderTimer);
+          STATE.loaderTimer = null;
+        }
+
+        setLoaderProgress(0);
+
+        // 1,5% a cada 100 ms = 15% por segundo.
+        // Para em 75% enquanto a API ainda estiver trabalhando.
+        STATE.loaderTimer = setInterval(()=>{
+          const current = STATE.loaderProgress || 0;
+
+          if(current >= 75){
+            clearInterval(STATE.loaderTimer);
+            STATE.loaderTimer = null;
+            return;
+          }
+
+          setLoaderProgress(Math.min(75, current + 1.5));
+        }, 100);
+      }
+    }
+
+    function hideLoader(force=false){
+      const overlay = $('#loader');
+
+      STATE.loadingCount = force
+        ? 0
+        : Math.max(0, (STATE.loadingCount || 0) - 1);
+
+      // Ainda existe outra operação usando o loader.
+      if(STATE.loadingCount > 0) return;
+
+      if(STATE.loaderTimer){
+        clearInterval(STATE.loaderTimer);
+        STATE.loaderTimer = null;
+      }
+
+      // API terminou: salta para 95%.
+      setLoaderProgress(95);
+
+      if(STATE.loaderFinishTimer){
+        clearTimeout(STATE.loaderFinishTimer);
+      }
+
+      // Mantém os 95% por meio segundo e só então fecha.
+      STATE.loaderFinishTimer = setTimeout(()=>{
+        if(overlay){
+          overlay.classList.remove('show');
+          overlay.setAttribute('aria-hidden','true');
+        }
+
+        // Reseta somente depois de a tela desaparecer.
+        setLoaderProgress(0);
+        STATE.loaderFinishTimer = null;
+      }, 500);
+    }
+
+    function formLoadingTemplate(text='Carregando dados do estande...'){
+      return `
+        <div class="loading-stage">
+          <div>
+            <div class="loader-core" aria-hidden="true">
+              <div class="loader-star"></div>
+            </div>
+            <h3 class="loader-title">Carregando</h3>
+            <p class="loader-desc">${text}</p>
+          </div>
+        </div>
+      `;
+    }
+    function pickBackground(){
+      const pool = ['assets/bg1.jpg','assets/bg2.jpg','assets/bg3.jpg'];
+      const choice = pool[Math.floor(Math.random() * pool.length)] || pool[0];
+      document.documentElement.style.setProperty('--bg-url', `url("${choice}")`);
+    }
+    function hideSplash(){ const s=$('#splash'); if(s) s.classList.add('hide'); setTimeout(()=> s&&s.remove(), 400); }
+
+    window.addEventListener('DOMContentLoaded', async ()=>{
+      initTheme();
+      pickBackground();
+      setTimeout(hideSplash, 700);
+      $('#btnLogin').onclick = onLogin;
+      $('#btnSair').onclick = ()=>{ stopPoll(); STATE.user=null; STATE.dia=null; localStorage.removeItem('user_inovaweek'); show('viewLogin'); };
+      $('#btnBackDias').onclick = ()=>{ stopPoll(); show('viewDias'); loadDias(); };
+      $('#btnBackEstandes').onclick = ()=>{ stopPoll(); show('viewEstandes'); loadEstandes(STATE.dia); };
+      const u = localStorage.getItem('user_inovaweek');
+      if(u){ STATE.user = JSON.parse(u); show('viewDias'); loadDias(); }
+    });
+
+    async function onLogin(){
+      const email = $('#email').value.trim().toLowerCase();
+      const matricula = $('#matricula').value.trim().toLowerCase();
+      if(!email||!matricula){ $('#loginMsg').textContent='Preencha email e matrícula.'; return; }
+      $('#loginMsg').textContent='';
+      showLoader('Validando acesso...');
+      try{
+        const out = await apiGet({ action:'login', email, matricula });
+        if(out.ok){ STATE.user={email,matricula}; localStorage.setItem('user_inovaweek', JSON.stringify(STATE.user)); show('viewDias'); loadDias(); }
+        else $('#loginMsg').textContent='Email ou matrícula incorretos';
+      }catch(err){ $('#loginMsg').textContent='Falha de rede (tente novamente).'; }
+      finally{ hideLoader(); }
+    }
+
+    function brNowString(){
+      const now = new Date();
+      return now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR');
+    }
+
+    async function loadDias(quiet=false){
+      $('#who').textContent = `${STATE.user.email} · ${STATE.user.matricula}`;
+      if(!quiet) showLoader('Carregando dias disponíveis...');
+      try{
+        const out = await apiGet({ action:'dias', ...STATE.user });
+        const dias = out.dias||[];
+        const wrap = $('#diasWrap'); wrap.innerHTML='';
+        if(!dias.length){ wrap.innerHTML='<p class="muted">Nenhuma data encontrada.</p>'; return; }
+        for(const d of dias){
+          const div=document.createElement('div'); div.className='tile';
+          div.innerHTML = `<div style="text-align:center;font-size:1.15rem;font-weight:800">${d}</div><div class="muted" style="text-align:center">Toque para ver estandes</div>`;
+          div.onclick = ()=>{ STATE.dia=d; show('viewEstandes'); loadEstandes(d); };
+          wrap.appendChild(div);
+        }
+        $('#sync1').textContent = brNowString();
+      }catch(err){ $('#diasWrap').innerHTML='<p class="err">Erro ao carregar dias.</p>'; }
+      finally{ if(!quiet) hideLoader(); }
+    }
+
+    async function loadEstandes(dia, quiet=false){
+      $('#who2').textContent = STATE.user.email; $('#diaAtual').textContent = dia;
+      if(!quiet) showLoader('Carregando estandes...');
+      try{
+        const out = await apiGet({ action:'estandes', ...STATE.user, data: dia });
+        const lst = out.estandes||[];
+        const w = $('#estandesWrap'); w.innerHTML='';
+        if(!lst.length){ w.innerHTML='<p class="muted">Nenhum estande para este dia.</p>'; return; }
+        for(const it of lst){
+          const div=document.createElement('div'); div.className='tile';
+          const badge = it.status==='avaliado'
+            ? '<span class="status" style="color:#0c9143;border-color:#2b6a3a">avaliado</span>'
+            : '<span class="status" style="color:#b26a00;border-color:#b26a00">pendente</span>';
+          div.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div style="font-size:1.05rem;font-weight:700">Estande ${it.estande}</div>${badge}</div>`;
+          if(it.status==='pendente') div.onclick = ()=> openForm(dia, it.estande);
+          else div.style.opacity=.75;
+          w.appendChild(div);
+        }
+        $('#sync2').textContent = brNowString();
+        startPoll(()=>loadEstandes(dia, true));
+      }catch(err){ $('#estandesWrap').innerHTML='<p class="err">Erro ao carregar estandes.</p>'; }
+      finally{ if(!quiet) hideLoader(); }
+    }
+
+    function renderChoices(group, title){
+      const gId = `g_${group}`;
+      const div = document.createElement('div');
+      div.className = 'criterion';
+      div.innerHTML = `<div class="crit-title">${title.toUpperCase()}</div><div class="btn-grid two-cols" id="${gId}"></div>`;
+      const grid = div.querySelector('#'+gId);
+      (STATE.choices?.[group] || []).forEach(v=>{
+        const b = document.createElement('button'); b.type='button'; b.className='btn-choice'; b.textContent=v; b.dataset.group=group; b.dataset.value=v;
+        b.onclick = ()=> selectChoice(group, v, b);
+        grid.appendChild(b);
+      });
+      return div;
+    }
+
+    function selectChoice(group, value, el){
+      STATE.formSel[group] = value;
+      el.parentElement.querySelectorAll('.btn-choice').forEach(btn=> btn.classList.toggle('selected', btn.dataset.value===value));
+      validateForm();
+    }
+
+    async function openForm(dia, estande){
+      stopPoll();
+
+      STATE.dia = dia;
+      STATE.estande = estande;
+      STATE.formSel = {};
+
+      $('#diaAtual2').textContent = dia;
+      $('#estandeAtual').textContent = estande;
+      $('#who3').textContent = STATE.user.email;
+
+      const actionFooter = document.querySelector('#viewForm > .footer:last-child');
+
+      // Limpa qualquer conteúdo do estande anterior antes de mostrar a tela.
+      $('#formWrap').innerHTML = formLoadingTemplate('Carregando formulário do estande...');
+      $('#formMsg').textContent = '';
+      $('#btnEnviar').disabled = true;
+      if(actionFooter) actionFooter.classList.add('hidden');
+
+      show('viewForm');
+      showLoader('Carregando formulário do estande...');
+
+      try{
+        if(!STATE.choices){
+          const c = await apiGet({ action:'choices' });
+
+          if(!c || !c.ok || !c.choices){
+            throw new Error('choices_invalid');
+          }
+
+          STATE.choices = c.choices;
+        }
+
+        const row = await apiGet({
+          action:'linha',
+          ...STATE.user,
+          data:dia,
+          estande
+        });
+
+        if(!row || !row.ok){
+          throw new Error(row?.error || 'row_not_found');
+        }
+        const wrap = document.createElement('div');
+
+        wrap.appendChild(renderChoices('inovacao','Inovação'));
+        wrap.appendChild(renderChoices('maturidade','Maturidade'));
+        wrap.appendChild(renderChoices('atratividade','Atratividade'));
+        wrap.appendChild(renderChoices('apresentacao','Apresentação'));
+        wrap.appendChild(renderChoices('potencial','Potencial'));
+
+        const ind = document.createElement('div');
+        ind.className = 'criterion';
+        ind.innerHTML = `<div class="crit-title">INDICARIA</div><div class="btn-grid two-cols" id="g_ind"></div>`;
+
+        (STATE.choices?.indicaria || []).forEach(v=>{
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'btn-choice';
+          b.textContent = v;
+          b.dataset.group = 'indicaria';
+          b.dataset.value = v;
+          b.onclick = ()=> selectChoice('indicaria', v, b);
+          ind.querySelector('#g_ind').appendChild(b);
+        });
+
+        wrap.appendChild(ind);
+
+        const obs = document.createElement('div');
+        obs.className = 'criterion';
+        obs.innerHTML = `
+          <div class="crit-title">OBSERVAÇÃO (opcional)</div>
+          <textarea id="observacao" rows="3" placeholder="Comentários"></textarea>
+        `;
+        wrap.appendChild(obs);
+
+        // Só agora, com os dados realmente carregados,
+        // substituímos o estado de loading pelo formulário.
+        $('#formWrap').innerHTML = '';
+        $('#formWrap').appendChild(wrap);
+
+        $('#btnEnviar').disabled = true;
+        $('#formMsg').className = 'err';
+        $('#formMsg').textContent = 'Preencha todas as avaliações obrigatórias.';
+        $('#btnEnviar').onclick = onSubmitForm;
+
+        if(actionFooter) actionFooter.classList.remove('hidden');
+
+      }catch(err){
+        $('#formWrap').innerHTML = `
+          <div class="criterion">
+            <div class="crit-title">Não foi possível carregar</div>
+            <p class="muted" style="margin:0">
+              O formulário não pôde ser carregado agora. Volte e tente novamente.
+            </p>
+          </div>
+        `;
+
+        $('#formMsg').textContent = '';
+        if(actionFooter) actionFooter.classList.add('hidden');
+
+      }finally{
+        hideLoader();
+      }
+    }
+
+    function validateForm(){
+      const required = ['inovacao','maturidade','atratividade','apresentacao','potencial','indicaria'];
+      const ok = required.every(k=> !!STATE.formSel[k]);
+      $('#btnEnviar').disabled = !ok;
+      $('#formMsg').className = ok ? 'muted' : 'err';
+      $('#formMsg').textContent = ok ? '' : 'Preencha todas as avaliações obrigatórias.';
+    }
+
+    async function onSubmitForm(){
+      const payload = { action:'submeter', ...STATE.user, data:STATE.dia, estande:STATE.estande, ...STATE.formSel, observacao: document.querySelector('#observacao')?.value || '' };
+      $('#btnEnviar').disabled=true; $('#formMsg').className='muted'; $('#formMsg').textContent='Enviando...';
+      showLoader('Enviando avaliação...');
+      try{
+        const out = await apiPost(payload);
+        if(out.ok){ toast(`Avaliação enviada! Nota final: ${out.nota}`); show('viewDias'); await loadDias(); }
+        else {
+          $('#formMsg').className='err';
+
+          if(out.error === 'already_evaluated'){
+            $('#formMsg').textContent='Este estande já recebeu uma avaliação.';
+            toast('Este estande já foi avaliado.', 2400);
+            setTimeout(()=>{
+              show('viewEstandes');
+              loadEstandes(STATE.dia);
+            }, 700);
+          }else{
+            $('#formMsg').textContent=`Erro: ${out.error||'falha'}`;
+            $('#btnEnviar').disabled=false;
+          }
+        }
+      }catch(err){ $('#formMsg').className='err'; $('#formMsg').textContent='Falha de rede/CORS. Tente novamente.'; $('#btnEnviar').disabled=false; }
+      finally{ hideLoader(); }
+    }
+  </script>
+
+  <div id="loader" class="loader-overlay" aria-hidden="true">
+    <div class="loader-panel" role="status" aria-live="polite" aria-busy="true">
+      <div class="loader-mini">InovaWeek 2026</div>
+      <div class="loader-box">
+        <div class="loader-core" aria-hidden="true">
+          <div class="loader-star"></div>
+        </div>
+        <div class="loader-texts">
+          <h3 class="loader-title">Carregando</h3>
+          <p class="loader-desc" id="loaderText">Buscando informações...</p>
+        </div>
+      </div>
+      <div class="loader-bar" aria-hidden="true"><div id="loaderFill" class="loader-fill"></div></div></div>
+    </div>
+  </div>
+
+</body>
+</html>
