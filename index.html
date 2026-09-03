@@ -1,4 +1,5 @@
 
+
 <!doctype html>
 <html lang="pt-br">
 <head>
@@ -162,7 +163,7 @@
       opacity:.45;
     }
 
-    #viewLogin{padding:24px}
+    #viewLogin,#viewSenhaEnviada{padding:24px}
     #viewDias,#viewEstandes,#viewForm{padding:20px}
 
     .eyebrow{
@@ -411,6 +412,37 @@
     }
 
     #loginMsg{min-height:1.2em;margin-top:10px}
+
+
+    .login-helper{
+      margin:2px 0 0;
+      color:var(--muted);
+      font-size:.78rem;
+      line-height:1.45;
+    }
+
+    .access-success{
+      display:grid;
+      gap:18px;
+      max-width:650px;
+    }
+
+    .access-success-box{
+      border:1px solid var(--cyan);
+      border-radius:14px;
+      padding:18px;
+      background:
+        linear-gradient(
+          90deg,
+          color-mix(in srgb,var(--cyan) 10%,transparent),
+          transparent 55%
+        ),
+        var(--surface-2);
+    }
+
+    .access-success-box p:last-child{
+      margin-bottom:0;
+    }
 
     /* Listas de dias/estandes */
     .grid{
@@ -700,62 +732,9 @@
       text-transform:uppercase;
     }
 
-
-    /* Verificação por código */
-    #viewCode{padding:24px}
-
-    .otp-panel{
-      display:grid;
-      gap:18px;
-      max-width:620px;
-    }
-
-    .otp-email{
-      display:inline-flex;
-      width:max-content;
-      max-width:100%;
-      padding:7px 10px;
-      border:1px solid var(--line);
-      border-radius:999px;
-      background:var(--surface-2);
-      color:var(--muted);
-      font-size:.82rem;
-      font-weight:800;
-      overflow-wrap:anywhere;
-    }
-
-    .otp-input{
-      min-height:72px;
-      text-align:center;
-      font-family:var(--display-font);
-      font-size:2.15rem;
-      letter-spacing:.42em;
-      padding-left:.42em;
-      color:var(--cyan);
-      caret-color:var(--cyan);
-    }
-
-    .otp-actions{
-      display:flex;
-      align-items:center;
-      flex-wrap:wrap;
-      gap:10px;
-    }
-
-    .otp-actions .primary{min-width:170px}
-
-    .otp-helper{
-      margin:0;
-      color:var(--muted);
-      font-size:.9rem;
-      line-height:1.5;
-    }
-
-    #codeMsg{min-height:1.2em}
-
     @media (min-width:640px){
       .wrap{padding-top:32px}
-      #viewLogin,#viewCode{padding:34px}
+      #viewLogin,#viewSenhaEnviada{padding:34px}
       #viewDias,#viewEstandes,#viewForm{padding:28px}
       .controls{grid-template-columns:1.25fr .78fr auto;align-items:end}
       .controls .field{min-width:0}
@@ -773,7 +752,7 @@
     @media (max-width:639px){
       .wrap{width:min(100% - 16px, 980px);padding-top:8px}
       .card{border-radius:14px}
-      #viewLogin,#viewCode,#viewDias,#viewEstandes,#viewForm{padding:18px 14px}
+      #viewLogin,#viewSenhaEnviada,#viewDias,#viewEstandes,#viewForm{padding:18px 14px}
       .topbar{margin-bottom:18px}
       h1{font-size:clamp(2.65rem, 16vw, 4.25rem)}
       h2{font-size:clamp(2rem, 11vw, 3rem)}
@@ -834,6 +813,22 @@
       box-shadow:0 18px 50px rgba(0,0,0,.38);
       overflow:hidden;
       padding:24px 20px 20px;
+    }
+
+    .loader-panel::before{
+      content:"";
+      position:absolute;
+      inset:0 auto auto 0;
+      width:100%;
+      height:5px;
+      background:
+        linear-gradient(
+          90deg,
+          var(--cyan) 0 52%,
+          var(--text) 52% 68%,
+          var(--yellow) 68% 79%,
+          var(--pink) 79% 100%
+        );
     }
 
     .loader-panel::after{
@@ -941,11 +936,10 @@
       position:relative;
       height:9px;
       margin-top:16px;
-      border:0;
+      border:1px solid var(--line);
       border-radius:999px;
-      overflow:visible;
-      background:transparent;
-      box-shadow:none;
+      overflow:hidden;
+      background:var(--surface-2);
     }
 
 
@@ -1048,8 +1042,9 @@
         </label>
 
         <label class="field">
-          <span class="field-label">Matrícula</span>
-          <input id="matricula" placeholder="Ex.: 202413575" inputmode="numeric" />
+          <span class="field-label">Matrícula / senha</span>
+          <input id="matricula" placeholder="Matrícula ou senha de 4 dígitos" inputmode="numeric" autocomplete="current-password" />
+          <span class="login-helper">No primeiro acesso, use sua matrícula. Depois, use a senha de 4 dígitos enviada para o seu e-mail.</span>
         </label>
 
         <button class="primary" id="btnLogin">Entrar</button>
@@ -1058,12 +1053,12 @@
       <div id="loginMsg" class="err" aria-live="polite"></div>
     </section>
 
-    <section class="card hidden" id="viewCode">
+    <section class="card hidden" id="viewSenhaEnviada">
       <div class="topbar">
         <div>
-          <div class="eyebrow">Verificação de acesso</div>
-          <h2>Confira seu <span class="accent-word">e-mail</span></h2>
-          <p class="subtitle">Enviamos um código de 6 dígitos para confirmar que este acesso pertence a você.</p>
+          <div class="eyebrow">Primeiro acesso concluído</div>
+          <h2>Senha <span class="accent-word">enviada</span></h2>
+          <p class="subtitle">Seu acesso inicial foi confirmado.</p>
         </div>
 
         <button class="tbtn theme-btn" aria-label="Alternar tema" title="Alternar tema">
@@ -1075,32 +1070,18 @@
         </button>
       </div>
 
-      <div class="otp-panel">
-        <div><div class="event-stamp"><span class="spark"></span>Código de acesso</div></div>
+      <div class="access-success">
+        <div class="event-stamp"><span class="spark"></span>Nova senha criada</div>
+
+        <div class="access-success-box">
+          <p><strong>A senha foi enviada via e-mail.</strong></p>
+          <p class="muted">Enviamos uma senha de 4 dígitos para <span id="senhaEmail"></span>.</p>
+          <p class="muted">A partir de agora, volte para o login e entre usando seu e-mail e essa nova senha. Sua matrícula não será mais usada para acessar o sistema.</p>
+        </div>
 
         <div>
-          <p class="otp-helper" style="margin-bottom:8px">Código enviado para:</p>
-          <div class="otp-email" id="codeEmail">••••@uvv.br</div>
+          <button class="primary" id="btnVoltarLogin">Voltar para o login</button>
         </div>
-
-        <label class="field">
-          <span class="field-label">Código de 6 dígitos</span>
-          <input id="codigo" class="otp-input" placeholder="000000"
-                 inputmode="numeric" autocomplete="one-time-code"
-                 maxlength="6" aria-label="Código de verificação" />
-        </label>
-
-        <p class="otp-helper">
-          O código expira em 10 minutos. Depois da confirmação, este dispositivo ficará autorizado por 3 horas.
-        </p>
-
-        <div class="otp-actions">
-          <button class="primary" id="btnValidarCodigo">Confirmar código</button>
-          <button id="btnReenviarCodigo">Reenviar código</button>
-          <button class="secondary" id="btnTrocarDados">← Trocar dados</button>
-        </div>
-
-        <div id="codeMsg" class="err" aria-live="polite"></div>
       </div>
     </section>
 
@@ -1189,718 +1170,1119 @@
   </main>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
   <script>
     const FORCE_API = "https://script.google.com/macros/s/AKfycbwK7E1Uu8g-ULwm15on5q05PtTtsWrERd3tqR-HszuGvf2cnYx9OojaZjkZgN2eEEId/exec";
     const POLL_MS = 7000;
-    const SESSION_STORAGE_KEY = 'inovaweek_session_v1';
 
     const STATE = {
       api: FORCE_API,
-      session: null,
-      pendingLogin: null,
-      dia: null,
-      estande: null,
-      choices: null,
-      poll: null,
-      formSel: {},
-      resendTimer: null,
-      loadingCount: 0,
-      loaderProgress: 0,
-      loaderTimer: null,
-      loaderFinishTimer: null
+      user:null,
+      dia:null,
+      estande:null,
+      choices:null,
+      poll:null,
+      formSel:{},
+      loadingCount:0,
+      loaderProgress:0,
+      loaderTimer:null,
+      loaderFinishTimer:null
     };
 
     const $ = s => document.querySelector(s);
 
-    function setTheme(theme){
+    function setTheme(theme) {
       document.documentElement.setAttribute('data-theme', theme);
       localStorage.setItem('theme_inovaweek', theme);
     }
 
-    function initTheme(){
+    function initTheme() {
       const saved = localStorage.getItem('theme_inovaweek');
       const prefers = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light':'dark';
+
       setTheme(saved || prefers);
 
-      document.querySelectorAll('.theme-btn').forEach(btn=>{
+      document.querySelectorAll('.theme-btn').forEach(btn=>
         btn.addEventListener('click', ()=>{
           const cur = document.documentElement.getAttribute('data-theme') || 'dark';
           setTheme(cur==='dark' ? 'light':'dark');
-        });
-      });
+        })
+      );
     }
 
     function withTimeout(promise, ms=15000){
       return Promise.race([
         promise,
-        new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')), ms))
+        new Promise((_,rej)=>
+          setTimeout(
+            ()=>rej(new Error('timeout')),
+            ms
+          )
+        )
       ]);
     }
 
     async function apiPost(data){
       const body = new URLSearchParams(data);
-      const res = await withTimeout(fetch(STATE.api, {
-        method:'POST',
-        headers:{'Content-Type':'application/x-www-form-urlencoded'},
-        body
-      }));
+
+      const res = await withTimeout(
+        fetch(STATE.api, {
+          method:'POST',
+          headers:{
+            'Content-Type':
+              'application/x-www-form-urlencoded'
+          },
+          body
+        })
+      );
+
       return res.json();
     }
 
     function show(id){
-      ['viewLogin','viewCode','viewDias','viewEstandes','viewForm'].forEach(v=>{
+      [
+        'viewLogin',
+        'viewSenhaEnviada',
+        'viewDias',
+        'viewEstandes',
+        'viewForm'
+      ].forEach(v=>{
         const el = $('#'+v);
+
         if(!el) return;
-        if(v===id) el.classList.remove('hidden');
-        else el.classList.add('hidden');
+
+        if(v===id){
+          el.classList.remove('hidden');
+        }else{
+          el.classList.add('hidden');
+        }
       });
     }
 
-    function startPoll(fn){ stopPoll(); STATE.poll=setInterval(fn,POLL_MS); }
-    function stopPoll(){ if(STATE.poll){ clearInterval(STATE.poll); STATE.poll=null; } }
+    function startPoll(fn){
+      stopPoll();
+      STATE.poll = setInterval(fn, POLL_MS);
+    }
+
+    function stopPoll(){
+      if(STATE.poll){
+        clearInterval(STATE.poll);
+        STATE.poll = null;
+      }
+    }
 
     function toast(msg, ms=1600){
-      const t=$('#toast');
-      t.textContent=msg;
+      const t = $('#toast');
+      t.textContent = msg;
       t.classList.add('show');
-      setTimeout(()=>t.classList.remove('show'), ms);
+
+      setTimeout(
+        ()=>t.classList.remove('show'),
+        ms
+      );
     }
 
     function setLoaderProgress(value){
-      const fill=$('#loaderFill');
-      const safeValue=Math.max(0,Math.min(100,Number(value)||0));
-      STATE.loaderProgress=safeValue;
-      if(fill) fill.style.width=`${safeValue}%`;
+      const fill = $('#loaderFill');
+
+      const safeValue =
+        Math.max(
+          0,
+          Math.min(
+            100,
+            Number(value) || 0
+          )
+        );
+
+      STATE.loaderProgress =
+        safeValue;
+
+      if(fill){
+        fill.style.width =
+          `${safeValue}%`;
+      }
     }
 
-    function showLoader(text='Carregando informações...'){
-      const overlay=$('#loader');
-      const textEl=$('#loaderText');
-      STATE.loadingCount=(STATE.loadingCount||0)+1;
+    function showLoader(
+      text='Carregando informações...'
+    ){
+      const overlay = $('#loader');
+      const textEl = $('#loaderText');
 
-      if(textEl) textEl.textContent=text;
+      STATE.loadingCount =
+        (STATE.loadingCount || 0) + 1;
+
+      if(textEl){
+        textEl.textContent = text;
+      }
 
       if(STATE.loaderFinishTimer){
-        clearTimeout(STATE.loaderFinishTimer);
-        STATE.loaderFinishTimer=null;
+        clearTimeout(
+          STATE.loaderFinishTimer
+        );
+
+        STATE.loaderFinishTimer =
+          null;
       }
 
       if(overlay){
         overlay.classList.add('show');
-        overlay.setAttribute('aria-hidden','false');
+        overlay.setAttribute(
+          'aria-hidden',
+          'false'
+        );
       }
 
-      if(STATE.loadingCount===1){
+      if(STATE.loadingCount === 1){
         if(STATE.loaderTimer){
-          clearInterval(STATE.loaderTimer);
-          STATE.loaderTimer=null;
+          clearInterval(
+            STATE.loaderTimer
+          );
+
+          STATE.loaderTimer =
+            null;
         }
 
         setLoaderProgress(0);
 
-        STATE.loaderTimer=setInterval(()=>{
-          const current=STATE.loaderProgress||0;
-          if(current>=75){
-            clearInterval(STATE.loaderTimer);
-            STATE.loaderTimer=null;
-            return;
-          }
-          setLoaderProgress(Math.min(75,current+1.5));
-        },100);
+        STATE.loaderTimer =
+          setInterval(()=>{
+            const current =
+              STATE.loaderProgress || 0;
+
+            if(current >= 75){
+              clearInterval(
+                STATE.loaderTimer
+              );
+
+              STATE.loaderTimer =
+                null;
+
+              return;
+            }
+
+            setLoaderProgress(
+              Math.min(
+                75,
+                current + 1.5
+              )
+            );
+
+          }, 100);
       }
     }
 
     function hideLoader(force=false){
-      const overlay=$('#loader');
-      STATE.loadingCount=force?0:Math.max(0,(STATE.loadingCount||0)-1);
-      if(STATE.loadingCount>0) return;
+      const overlay = $('#loader');
+
+      STATE.loadingCount =
+        force
+          ? 0
+          : Math.max(
+              0,
+              (STATE.loadingCount || 0) - 1
+            );
+
+      if(STATE.loadingCount > 0){
+        return;
+      }
 
       if(STATE.loaderTimer){
-        clearInterval(STATE.loaderTimer);
-        STATE.loaderTimer=null;
+        clearInterval(
+          STATE.loaderTimer
+        );
+
+        STATE.loaderTimer =
+          null;
       }
 
       setLoaderProgress(95);
 
-      if(STATE.loaderFinishTimer) clearTimeout(STATE.loaderFinishTimer);
+      if(STATE.loaderFinishTimer){
+        clearTimeout(
+          STATE.loaderFinishTimer
+        );
+      }
 
-      STATE.loaderFinishTimer=setTimeout(()=>{
-        if(overlay){
-          overlay.classList.remove('show');
-          overlay.setAttribute('aria-hidden','true');
-        }
-        setLoaderProgress(0);
-        STATE.loaderFinishTimer=null;
-      },500);
+      STATE.loaderFinishTimer =
+        setTimeout(()=>{
+          if(overlay){
+            overlay.classList.remove('show');
+            overlay.setAttribute(
+              'aria-hidden',
+              'true'
+            );
+          }
+
+          setLoaderProgress(0);
+
+          STATE.loaderFinishTimer =
+            null;
+
+        }, 500);
     }
 
-    function formLoadingTemplate(text='Carregando dados do estande...'){
-      return `<div class="loading-stage"><div>
-        <div class="loader-core" aria-hidden="true"><div class="loader-star"></div></div>
-        <h3 class="loader-title">Carregando</h3>
-        <p class="loader-desc">${text}</p>
-      </div></div>`;
+    function formLoadingTemplate(
+      text='Carregando dados do estande...'
+    ){
+      return `
+        <div class="loading-stage">
+          <div>
+            <div class="loader-core" aria-hidden="true">
+              <div class="loader-star"></div>
+            </div>
+            <h3 class="loader-title">Carregando</h3>
+            <p class="loader-desc">${text}</p>
+          </div>
+        </div>
+      `;
     }
 
     function pickBackground(){
-      const pool=['assets/bg1.jpg','assets/bg2.jpg','assets/bg3.jpg'];
-      const choice=pool[Math.floor(Math.random()*pool.length)]||pool[0];
-      document.documentElement.style.setProperty('--bg-url',`url("${choice}")`);
+      const pool = [
+        'assets/bg1.jpg',
+        'assets/bg2.jpg',
+        'assets/bg3.jpg'
+      ];
+
+      const choice =
+        pool[
+          Math.floor(
+            Math.random() *
+            pool.length
+          )
+        ] ||
+        pool[0];
+
+      document.documentElement
+        .style
+        .setProperty(
+          '--bg-url',
+          `url("${choice}")`
+        );
     }
 
     function hideSplash(){
-      const s=$('#splash');
-      if(s) s.classList.add('hide');
-      setTimeout(()=>s&&s.remove(),400);
-    }
+      const s = $('#splash');
 
-    function saveSession(session){
-      STATE.session=session;
-      localStorage.setItem(SESSION_STORAGE_KEY,JSON.stringify(session));
-      localStorage.removeItem('user_inovaweek');
-    }
-
-    function clearSession(){
-      stopPoll();
-      STATE.session=null;
-      STATE.pendingLogin=null;
-      STATE.dia=null;
-      STATE.estande=null;
-      STATE.choices=null;
-      STATE.formSel={};
-      localStorage.removeItem(SESSION_STORAGE_KEY);
-      localStorage.removeItem('user_inovaweek');
-    }
-
-    function getUser(){ return STATE.session?.user||null; }
-
-    function userLabel(includeMatricula=true){
-      const user=getUser();
-      if(!user) return '';
-      return includeMatricula ? `${user.email} · ${user.matricula}` : user.email;
-    }
-
-    function isSessionError(out){
-      return !!out && ['session_invalid','session_expired'].includes(out.error);
-    }
-
-    function handleSessionError(out){
-      if(!isSessionError(out)) return false;
-      clearSession();
-      show('viewLogin');
-      $('#loginMsg').textContent='Sua sessão expirou. Faça a verificação novamente.';
-      return true;
-    }
-
-    async function authPost(action,extra={}){
-      if(!STATE.session?.token) return {ok:false,error:'session_invalid'};
-      return apiPost({action,token:STATE.session.token,...extra});
-    }
-
-    function brNowString(){
-      const now=new Date();
-      return now.toLocaleDateString('pt-BR')+' '+now.toLocaleTimeString('pt-BR');
-    }
-
-    window.addEventListener('DOMContentLoaded',async()=>{
-      initTheme();
-      pickBackground();
-      setTimeout(hideSplash,700);
-
-      $('#btnLogin').onclick=onLogin;
-      $('#btnValidarCodigo').onclick=onVerifyCode;
-      $('#btnReenviarCodigo').onclick=onResendCode;
-      $('#btnTrocarDados').onclick=backToLogin;
-      $('#btnSair').onclick=onLogout;
-
-      $('#btnBackDias').onclick=()=>{stopPoll();show('viewDias');loadDias();};
-      $('#btnBackEstandes').onclick=()=>{stopPoll();show('viewEstandes');loadEstandes(STATE.dia);};
-
-      $('#codigo').addEventListener('input',e=>{
-        e.target.value=e.target.value.replace(/\D/g,'').slice(0,6);
-      });
-
-      $('#codigo').addEventListener('keydown',e=>{
-        if(e.key==='Enter') onVerifyCode();
-      });
-
-      $('#matricula').addEventListener('keydown',e=>{
-        if(e.key==='Enter') onLogin();
-      });
-
-      await restoreSession();
-    });
-
-    async function restoreSession(){
-      const raw=localStorage.getItem(SESSION_STORAGE_KEY);
-      if(!raw){show('viewLogin');return;}
-
-      let stored=null;
-      try{stored=JSON.parse(raw);}
-      catch(err){clearSession();show('viewLogin');return;}
-
-      if(!stored?.token || (stored.expiresAt && Date.now()>=Date.parse(stored.expiresAt))){
-        clearSession();
-        show('viewLogin');
-        return;
+      if(s){
+        s.classList.add('hide');
       }
 
-      showLoader('Validando sessão...');
-
-      try{
-        const out=await apiPost({action:'session',token:stored.token});
-        if(!out.ok){clearSession();show('viewLogin');return;}
-
-        saveSession({token:stored.token,expiresAt:out.expires_at,user:out.user});
-        show('viewDias');
-        await loadDias(true);
-      }catch(err){
-        clearSession();
-        show('viewLogin');
-        $('#loginMsg').textContent='Não foi possível validar sua sessão. Tente novamente.';
-      }finally{
-        hideLoader();
-      }
+      setTimeout(
+        ()=>s && s.remove(),
+        400
+      );
     }
+
+    window.addEventListener(
+      'DOMContentLoaded',
+      ()=>{
+        initTheme();
+        pickBackground();
+        setTimeout(hideSplash, 700);
+
+        // Remove login persistido pela versão anterior.
+        // A senha de 4 dígitos não fica salva no navegador.
+        localStorage.removeItem(
+          'user_inovaweek'
+        );
+
+        $('#btnLogin').onclick =
+          onLogin;
+
+        $('#btnVoltarLogin').onclick =
+          ()=>{
+            window.location.reload();
+          };
+
+        $('#btnSair').onclick =
+          ()=>{
+            stopPoll();
+            STATE.user = null;
+            STATE.dia = null;
+
+            $('#email').value = '';
+            $('#matricula').value = '';
+            $('#loginMsg').textContent = '';
+
+            show('viewLogin');
+          };
+
+        $('#btnBackDias').onclick =
+          ()=>{
+            stopPoll();
+            show('viewDias');
+            loadDias();
+          };
+
+        $('#btnBackEstandes').onclick =
+          ()=>{
+            stopPoll();
+            show('viewEstandes');
+            loadEstandes(
+              STATE.dia
+            );
+          };
+
+        $('#matricula')
+          .addEventListener(
+            'keydown',
+            e=>{
+              if(e.key === 'Enter'){
+                onLogin();
+              }
+            }
+          );
+
+        show('viewLogin');
+      }
+    );
+
 
     async function onLogin(){
-      const email=$('#email').value.trim().toLowerCase();
-      const matricula=$('#matricula').value.trim();
+      const email =
+        $('#email')
+          .value
+          .trim()
+          .toLowerCase();
 
-      if(!email||!matricula){
-        $('#loginMsg').textContent='Preencha e-mail e matrícula.';
+      // O nome interno continua "matricula"
+      // por compatibilidade com a API.
+      // Depois do primeiro acesso este valor
+      // será a senha de 4 dígitos.
+      const matricula =
+        $('#matricula')
+          .value
+          .trim();
+
+      if(!email || !matricula){
+        $('#loginMsg').textContent =
+          'Preencha o e-mail e a matrícula/senha.';
+
         return;
       }
 
-      $('#loginMsg').textContent='';
-      showLoader('Enviando código de acesso...');
+      $('#loginMsg').textContent =
+        '';
+
+      showLoader(
+        'Validando acesso...'
+      );
 
       try{
-        const out=await apiPost({action:'solicitar_codigo',email,matricula});
+        const out =
+          await apiPost({
+            action:'login',
+            email,
+            matricula
+          });
+
 
         if(!out.ok){
-          if(out.error==='invalid_credentials'){
-            $('#loginMsg').textContent='E-mail ou matrícula incorretos.';
-          }else if(out.error==='rate_limited'){
-            $('#loginMsg').textContent=`Aguarde ${out.retry_after||60}s para solicitar outro código.`;
-          }else if(out.error==='email_send_failed'){
-            $('#loginMsg').textContent='Não foi possível enviar o e-mail agora. Tente novamente.';
+          if(
+            out.error ===
+            'email_send_failed'
+          ){
+            $('#loginMsg').textContent =
+              'Não foi possível enviar a senha por e-mail. Tente novamente.';
+
+          }else if(
+            out.error ===
+            'first_access_activation_failed'
+          ){
+            $('#loginMsg').textContent =
+              'O e-mail foi enviado, mas não foi possível concluir o primeiro acesso. Tente novamente.';
+
           }else{
-            $('#loginMsg').textContent='Não foi possível iniciar o acesso.';
+            $('#loginMsg').textContent =
+              'E-mail, matrícula ou senha incorretos.';
           }
+
           return;
         }
 
-        STATE.pendingLogin={
+
+        // Primeiro acesso:
+        // a API enviou a nova senha e trocou
+        // a matrícula no Supabase.
+        if(out.primeiro_acesso){
+          STATE.user = null;
+
+          $('#senhaEmail').textContent =
+            out.email_masked || email;
+
+          show(
+            'viewSenhaEnviada'
+          );
+
+          return;
+        }
+
+
+        // Login normal usando e-mail + senha.
+        STATE.user = {
           email,
-          matricula,
-          challengeId:out.challenge_id,
-          emailMasked:out.email_masked||email
+          matricula
         };
 
-        $('#codeEmail').textContent=STATE.pendingLogin.emailMasked;
-        $('#codigo').value='';
-        $('#codeMsg').textContent='';
-        show('viewCode');
-        startResendCountdown(out.resend_after||60);
-        setTimeout(()=>$('#codigo').focus(),80);
-
-      }catch(err){
-        $('#loginMsg').textContent='Falha de rede. Tente novamente.';
-      }finally{
-        hideLoader();
-      }
-    }
-
-    async function onVerifyCode(){
-      if(!STATE.pendingLogin?.challengeId){backToLogin();return;}
-
-      const codigo=$('#codigo').value.trim();
-      if(!/^\d{6}$/.test(codigo)){
-        $('#codeMsg').textContent='Digite os 6 números do código.';
-        return;
-      }
-
-      $('#codeMsg').textContent='';
-      showLoader('Confirmando código...');
-
-      try{
-        const out=await apiPost({
-          action:'verificar_codigo',
-          challenge_id:STATE.pendingLogin.challengeId,
-          codigo
-        });
-
-        if(!out.ok){
-          if(out.error==='invalid_code'){
-            const extra=Number.isInteger(out.attempts_remaining)
-              ? ` Restam ${out.attempts_remaining} tentativa(s).`
-              : '';
-            $('#codeMsg').textContent='Código incorreto.'+extra;
-          }else if(out.error==='code_expired'){
-            $('#codeMsg').textContent='Este código expirou. Solicite um novo código.';
-          }else if(out.error==='code_used'){
-            $('#codeMsg').textContent='Este código já foi utilizado. Solicite um novo código.';
-          }else if(out.error==='too_many_attempts'){
-            $('#codeMsg').textContent='Muitas tentativas. Solicite um novo código.';
-          }else{
-            $('#codeMsg').textContent='Não foi possível validar o código.';
-          }
-          return;
-        }
-
-        saveSession({token:out.token,expiresAt:out.expires_at,user:out.user});
-        STATE.pendingLogin=null;
-
-        if(STATE.resendTimer){
-          clearInterval(STATE.resendTimer);
-          STATE.resendTimer=null;
-        }
-
-        toast('Acesso confirmado!',1800);
         show('viewDias');
-        await loadDias(true);
+
+        await loadDias();
 
       }catch(err){
-        $('#codeMsg').textContent='Falha de rede. Tente novamente.';
+        $('#loginMsg').textContent =
+          'Falha de rede. Tente novamente.';
+
       }finally{
         hideLoader();
       }
     }
 
-    async function onResendCode(){
-      if(!STATE.pendingLogin){backToLogin();return;}
 
-      const btn=$('#btnReenviarCodigo');
-      if(btn.disabled) return;
+    function brNowString(){
+      const now = new Date();
 
-      $('#codeMsg').textContent='';
-      showLoader('Reenviando código...');
+      return (
+        now.toLocaleDateString('pt-BR') +
+        ' ' +
+        now.toLocaleTimeString('pt-BR')
+      );
+    }
+
+
+    async function loadDias(
+      quiet=false
+    ){
+      // Nunca mostra a senha na interface.
+      $('#who').textContent =
+        STATE.user.email;
+
+      if(!quiet){
+        showLoader(
+          'Carregando dias disponíveis...'
+        );
+      }
 
       try{
-        const out=await apiPost({
-          action:'solicitar_codigo',
-          email:STATE.pendingLogin.email,
-          matricula:STATE.pendingLogin.matricula
-        });
+        const out =
+          await apiPost({
+            action:'dias',
+            ...STATE.user
+          });
 
-        if(!out.ok){
-          if(out.error==='rate_limited'){
-            startResendCountdown(out.retry_after||60);
-            $('#codeMsg').textContent='Aguarde um pouco antes de reenviar.';
-          }else{
-            $('#codeMsg').textContent='Não foi possível reenviar o código.';
-          }
-          return;
-        }
+        const dias =
+          out.dias || [];
 
-        STATE.pendingLogin.challengeId=out.challenge_id;
-        STATE.pendingLogin.emailMasked=out.email_masked||STATE.pendingLogin.emailMasked;
-        $('#codeEmail').textContent=STATE.pendingLogin.emailMasked;
-        $('#codigo').value='';
-        toast('Novo código enviado!',1800);
-        startResendCountdown(out.resend_after||60);
+        const wrap =
+          $('#diasWrap');
 
-      }catch(err){
-        $('#codeMsg').textContent='Falha de rede. Tente novamente.';
-      }finally{
-        hideLoader();
-      }
-    }
-
-    function startResendCountdown(seconds){
-      if(STATE.resendTimer){
-        clearInterval(STATE.resendTimer);
-        STATE.resendTimer=null;
-      }
-
-      const btn=$('#btnReenviarCodigo');
-      let remaining=Math.max(1,Number(seconds)||60);
-
-      btn.disabled=true;
-      btn.textContent=`Reenviar em ${remaining}s`;
-
-      STATE.resendTimer=setInterval(()=>{
-        remaining-=1;
-
-        if(remaining<=0){
-          clearInterval(STATE.resendTimer);
-          STATE.resendTimer=null;
-          btn.disabled=false;
-          btn.textContent='Reenviar código';
-          return;
-        }
-
-        btn.textContent=`Reenviar em ${remaining}s`;
-      },1000);
-    }
-
-    function backToLogin(){
-      if(STATE.resendTimer){
-        clearInterval(STATE.resendTimer);
-        STATE.resendTimer=null;
-      }
-
-      STATE.pendingLogin=null;
-      $('#codigo').value='';
-      $('#codeMsg').textContent='';
-      show('viewLogin');
-    }
-
-    async function onLogout(){
-      stopPoll();
-      const token=STATE.session?.token;
-
-      clearSession();
-      show('viewLogin');
-
-      if(token){
-        try{await apiPost({action:'logout',token});}
-        catch(err){}
-      }
-    }
-
-    async function loadDias(quiet=false){
-      $('#who').textContent=userLabel(true);
-      if(!quiet) showLoader('Carregando dias disponíveis...');
-
-      try{
-        const out=await authPost('dias');
-        if(handleSessionError(out)) return;
-
-        const dias=out.dias||[];
-        const wrap=$('#diasWrap');
-        wrap.innerHTML='';
+        wrap.innerHTML = '';
 
         if(!dias.length){
-          wrap.innerHTML='<p class="muted">Nenhuma data encontrada.</p>';
+          wrap.innerHTML =
+            '<p class="muted">Nenhuma data encontrada.</p>';
+
           return;
         }
 
         for(const d of dias){
-          const div=document.createElement('div');
-          div.className='tile';
-          div.innerHTML=`<div style="text-align:center;font-size:1.15rem;font-weight:800">${d}</div><div class="muted" style="text-align:center">Toque para ver estandes</div>`;
-          div.onclick=()=>{STATE.dia=d;show('viewEstandes');loadEstandes(d);};
+          const div =
+            document.createElement(
+              'div'
+            );
+
+          div.className =
+            'tile';
+
+          div.innerHTML =
+            `<div style="text-align:center;font-size:1.15rem;font-weight:800">${d}</div>` +
+            `<div class="muted" style="text-align:center">Toque para ver estandes</div>`;
+
+          div.onclick =
+            ()=>{
+              STATE.dia = d;
+
+              show(
+                'viewEstandes'
+              );
+
+              loadEstandes(d);
+            };
+
           wrap.appendChild(div);
         }
 
-        $('#sync1').textContent=brNowString();
+        $('#sync1').textContent =
+          brNowString();
 
       }catch(err){
-        $('#diasWrap').innerHTML='<p class="err">Erro ao carregar dias.</p>';
+        $('#diasWrap').innerHTML =
+          '<p class="err">Erro ao carregar dias.</p>';
+
       }finally{
-        if(!quiet) hideLoader();
+        if(!quiet){
+          hideLoader();
+        }
       }
     }
 
-    async function loadEstandes(dia,quiet=false){
-      $('#who2').textContent=userLabel(false);
-      $('#diaAtual').textContent=dia;
-      if(!quiet) showLoader('Carregando estandes...');
+
+    async function loadEstandes(
+      dia,
+      quiet=false
+    ){
+      $('#who2').textContent =
+        STATE.user.email;
+
+      $('#diaAtual').textContent =
+        dia;
+
+      if(!quiet){
+        showLoader(
+          'Carregando estandes...'
+        );
+      }
 
       try{
-        const out=await authPost('estandes',{data:dia});
-        if(handleSessionError(out)) return;
+        const out =
+          await apiPost({
+            action:'estandes',
+            ...STATE.user,
+            data:dia
+          });
 
-        const lst=out.estandes||[];
-        const w=$('#estandesWrap');
-        w.innerHTML='';
+        const lst =
+          out.estandes || [];
+
+        const w =
+          $('#estandesWrap');
+
+        w.innerHTML = '';
 
         if(!lst.length){
-          w.innerHTML='<p class="muted">Nenhum estande para este dia.</p>';
+          w.innerHTML =
+            '<p class="muted">Nenhum estande para este dia.</p>';
+
           return;
         }
 
         for(const it of lst){
-          const div=document.createElement('div');
-          div.className='tile';
+          const div =
+            document.createElement(
+              'div'
+            );
 
-          const badge=it.status==='avaliado'
-            ? '<span class="status" style="color:#0c9143;border-color:#2b6a3a">avaliado</span>'
-            : '<span class="status" style="color:#b26a00;border-color:#b26a00">pendente</span>';
+          div.className =
+            'tile';
 
-          div.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div style="font-size:1.05rem;font-weight:700">Estande ${it.estande}</div>${badge}</div>`;
+          const badge =
+            it.status === 'avaliado'
+              ? '<span class="status" style="color:#0c9143;border-color:#2b6a3a">avaliado</span>'
+              : '<span class="status" style="color:#b26a00;border-color:#b26a00">pendente</span>';
 
-          if(it.status==='pendente') div.onclick=()=>openForm(dia,it.estande);
-          else div.style.opacity=.75;
+          div.innerHTML =
+            `<div style="display:flex;justify-content:space-between;align-items:center;gap:8px">` +
+              `<div style="font-size:1.05rem;font-weight:700">Estande ${it.estande}</div>` +
+              `${badge}` +
+            `</div>`;
+
+          if(
+            it.status ===
+            'pendente'
+          ){
+            div.onclick =
+              ()=>openForm(
+                dia,
+                it.estande
+              );
+
+          }else{
+            div.style.opacity =
+              .75;
+          }
 
           w.appendChild(div);
         }
 
-        $('#sync2').textContent=brNowString();
-        startPoll(()=>loadEstandes(dia,true));
+        $('#sync2').textContent =
+          brNowString();
+
+        startPoll(
+          ()=>loadEstandes(
+            dia,
+            true
+          )
+        );
 
       }catch(err){
-        $('#estandesWrap').innerHTML='<p class="err">Erro ao carregar estandes.</p>';
+        $('#estandesWrap').innerHTML =
+          '<p class="err">Erro ao carregar estandes.</p>';
+
       }finally{
-        if(!quiet) hideLoader();
+        if(!quiet){
+          hideLoader();
+        }
       }
     }
 
-    function renderChoices(group,title){
-      const gId=`g_${group}`;
-      const div=document.createElement('div');
-      div.className='criterion';
-      div.innerHTML=`<div class="crit-title">${title.toUpperCase()}</div><div class="btn-grid two-cols" id="${gId}"></div>`;
-      const grid=div.querySelector('#'+gId);
 
-      (STATE.choices?.[group]||[]).forEach(v=>{
-        const b=document.createElement('button');
-        b.type='button';
-        b.className='btn-choice';
-        b.textContent=v;
-        b.dataset.group=group;
-        b.dataset.value=v;
-        b.onclick=()=>selectChoice(group,v,b);
+    function renderChoices(
+      group,
+      title
+    ){
+      const gId =
+        `g_${group}`;
+
+      const div =
+        document.createElement(
+          'div'
+        );
+
+      div.className =
+        'criterion';
+
+      div.innerHTML =
+        `<div class="crit-title">${title.toUpperCase()}</div>` +
+        `<div class="btn-grid two-cols" id="${gId}"></div>`;
+
+      const grid =
+        div.querySelector(
+          '#'+gId
+        );
+
+      (
+        STATE.choices?.[group] ||
+        []
+      ).forEach(v=>{
+        const b =
+          document.createElement(
+            'button'
+          );
+
+        b.type =
+          'button';
+
+        b.className =
+          'btn-choice';
+
+        b.textContent =
+          v;
+
+        b.dataset.group =
+          group;
+
+        b.dataset.value =
+          v;
+
+        b.onclick =
+          ()=>selectChoice(
+            group,
+            v,
+            b
+          );
+
         grid.appendChild(b);
       });
 
       return div;
     }
 
-    function selectChoice(group,value,el){
-      STATE.formSel[group]=value;
-      el.parentElement.querySelectorAll('.btn-choice').forEach(btn=>{
-        btn.classList.toggle('selected',btn.dataset.value===value);
-      });
+
+    function selectChoice(
+      group,
+      value,
+      el
+    ){
+      STATE.formSel[group] =
+        value;
+
+      el.parentElement
+        .querySelectorAll(
+          '.btn-choice'
+        )
+        .forEach(
+          btn=>
+            btn.classList.toggle(
+              'selected',
+              btn.dataset.value ===
+              value
+            )
+        );
+
       validateForm();
     }
 
-    async function openForm(dia,estande){
+
+    async function openForm(
+      dia,
+      estande
+    ){
       stopPoll();
 
-      STATE.dia=dia;
-      STATE.estande=estande;
-      STATE.formSel={};
+      STATE.dia =
+        dia;
 
-      $('#diaAtual2').textContent=dia;
-      $('#estandeAtual').textContent=estande;
-      $('#who3').textContent=userLabel(false);
+      STATE.estande =
+        estande;
 
-      const actionFooter=document.querySelector('#viewForm > .footer:last-child');
+      STATE.formSel =
+        {};
 
-      $('#formWrap').innerHTML=formLoadingTemplate('Carregando formulário do estande...');
-      $('#formMsg').textContent='';
-      $('#btnEnviar').disabled=true;
-      if(actionFooter) actionFooter.classList.add('hidden');
+      $('#diaAtual2').textContent =
+        dia;
+
+      $('#estandeAtual').textContent =
+        estande;
+
+      $('#who3').textContent =
+        STATE.user.email;
+
+      const actionFooter =
+        document.querySelector(
+          '#viewForm > .footer:last-child'
+        );
+
+      $('#formWrap').innerHTML =
+        formLoadingTemplate(
+          'Carregando formulário do estande...'
+        );
+
+      $('#formMsg').textContent =
+        '';
+
+      $('#btnEnviar').disabled =
+        true;
+
+      if(actionFooter){
+        actionFooter.classList.add(
+          'hidden'
+        );
+      }
 
       show('viewForm');
-      showLoader('Carregando formulário do estande...');
+
+      showLoader(
+        'Carregando formulário do estande...'
+      );
 
       try{
         if(!STATE.choices){
-          const c=await authPost('choices');
-          if(handleSessionError(c)) return;
+          const c =
+            await apiPost({
+              action:'choices'
+            });
 
-          if(!c||!c.ok||!c.choices) throw new Error('choices_invalid');
-          STATE.choices=c.choices;
+          if(
+            !c ||
+            !c.ok ||
+            !c.choices
+          ){
+            throw new Error(
+              'choices_invalid'
+            );
+          }
+
+          STATE.choices =
+            c.choices;
         }
 
-        const row=await authPost('linha',{data:dia,estande});
-        if(handleSessionError(row)) return;
-        if(!row||!row.ok) throw new Error(row?.error||'row_not_found');
 
-        const wrap=document.createElement('div');
+        const row =
+          await apiPost({
+            action:'linha',
+            ...STATE.user,
+            data:dia,
+            estande
+          });
 
-        wrap.appendChild(renderChoices('inovacao','Inovação'));
-        wrap.appendChild(renderChoices('maturidade','Maturidade'));
-        wrap.appendChild(renderChoices('atratividade','Atratividade'));
-        wrap.appendChild(renderChoices('apresentacao','Apresentação'));
-        wrap.appendChild(renderChoices('potencial','Potencial'));
+        if(
+          !row ||
+          !row.ok
+        ){
+          throw new Error(
+            row?.error ||
+            'row_not_found'
+          );
+        }
 
-        const ind=document.createElement('div');
-        ind.className='criterion';
-        ind.innerHTML=`<div class="crit-title">INDICARIA</div><div class="btn-grid two-cols" id="g_ind"></div>`;
 
-        (STATE.choices?.indicaria||[]).forEach(v=>{
-          const b=document.createElement('button');
-          b.type='button';
-          b.className='btn-choice';
-          b.textContent=v;
-          b.dataset.group='indicaria';
-          b.dataset.value=v;
-          b.onclick=()=>selectChoice('indicaria',v,b);
-          ind.querySelector('#g_ind').appendChild(b);
+        const wrap =
+          document.createElement(
+            'div'
+          );
+
+        wrap.appendChild(
+          renderChoices(
+            'inovacao',
+            'Inovação'
+          )
+        );
+
+        wrap.appendChild(
+          renderChoices(
+            'maturidade',
+            'Maturidade'
+          )
+        );
+
+        wrap.appendChild(
+          renderChoices(
+            'atratividade',
+            'Atratividade'
+          )
+        );
+
+        wrap.appendChild(
+          renderChoices(
+            'apresentacao',
+            'Apresentação'
+          )
+        );
+
+        wrap.appendChild(
+          renderChoices(
+            'potencial',
+            'Potencial'
+          )
+        );
+
+
+        const ind =
+          document.createElement(
+            'div'
+          );
+
+        ind.className =
+          'criterion';
+
+        ind.innerHTML =
+          `<div class="crit-title">INDICARIA</div>` +
+          `<div class="btn-grid two-cols" id="g_ind"></div>`;
+
+        (
+          STATE.choices?.indicaria ||
+          []
+        ).forEach(v=>{
+          const b =
+            document.createElement(
+              'button'
+            );
+
+          b.type =
+            'button';
+
+          b.className =
+            'btn-choice';
+
+          b.textContent =
+            v;
+
+          b.dataset.group =
+            'indicaria';
+
+          b.dataset.value =
+            v;
+
+          b.onclick =
+            ()=>selectChoice(
+              'indicaria',
+              v,
+              b
+            );
+
+          ind
+            .querySelector(
+              '#g_ind'
+            )
+            .appendChild(b);
         });
 
         wrap.appendChild(ind);
 
-        const obs=document.createElement('div');
-        obs.className='criterion';
-        obs.innerHTML=`<div class="crit-title">OBSERVAÇÃO (opcional)</div><textarea id="observacao" rows="3" placeholder="Comentários"></textarea>`;
+
+        const obs =
+          document.createElement(
+            'div'
+          );
+
+        obs.className =
+          'criterion';
+
+        obs.innerHTML =
+          `<div class="crit-title">OBSERVAÇÃO (opcional)</div>` +
+          `<textarea id="observacao" rows="3" placeholder="Comentários"></textarea>`;
+
         wrap.appendChild(obs);
 
-        $('#formWrap').innerHTML='';
-        $('#formWrap').appendChild(wrap);
-        $('#btnEnviar').disabled=true;
-        $('#formMsg').className='err';
-        $('#formMsg').textContent='Preencha todas as avaliações obrigatórias.';
-        $('#btnEnviar').onclick=onSubmitForm;
 
-        if(actionFooter) actionFooter.classList.remove('hidden');
+        $('#formWrap').innerHTML =
+          '';
+
+        $('#formWrap')
+          .appendChild(wrap);
+
+        $('#btnEnviar').disabled =
+          true;
+
+        $('#formMsg').className =
+          'err';
+
+        $('#formMsg').textContent =
+          'Preencha todas as avaliações obrigatórias.';
+
+        $('#btnEnviar').onclick =
+          onSubmitForm;
+
+        if(actionFooter){
+          actionFooter.classList.remove(
+            'hidden'
+          );
+        }
 
       }catch(err){
-        $('#formWrap').innerHTML=`<div class="criterion"><div class="crit-title">Não foi possível carregar</div><p class="muted" style="margin:0">O formulário não pôde ser carregado agora. Volte e tente novamente.</p></div>`;
-        $('#formMsg').textContent='';
-        if(actionFooter) actionFooter.classList.add('hidden');
+        $('#formWrap').innerHTML =
+          `<div class="criterion">` +
+            `<div class="crit-title">Não foi possível carregar</div>` +
+            `<p class="muted" style="margin:0">O formulário não pôde ser carregado agora. Volte e tente novamente.</p>` +
+          `</div>`;
+
+        $('#formMsg').textContent =
+          '';
+
+        if(actionFooter){
+          actionFooter.classList.add(
+            'hidden'
+          );
+        }
+
       }finally{
         hideLoader();
       }
     }
 
+
     function validateForm(){
-      const required=['inovacao','maturidade','atratividade','apresentacao','potencial','indicaria'];
-      const ok=required.every(k=>!!STATE.formSel[k]);
-      $('#btnEnviar').disabled=!ok;
-      $('#formMsg').className=ok?'muted':'err';
-      $('#formMsg').textContent=ok?'':'Preencha todas as avaliações obrigatórias.';
+      const required = [
+        'inovacao',
+        'maturidade',
+        'atratividade',
+        'apresentacao',
+        'potencial',
+        'indicaria'
+      ];
+
+      const ok =
+        required.every(
+          k=>!!STATE.formSel[k]
+        );
+
+      $('#btnEnviar').disabled =
+        !ok;
+
+      $('#formMsg').className =
+        ok
+          ? 'muted'
+          : 'err';
+
+      $('#formMsg').textContent =
+        ok
+          ? ''
+          : 'Preencha todas as avaliações obrigatórias.';
     }
 
+
     async function onSubmitForm(){
-      const payload={
+      const payload = {
         action:'submeter',
-        token:STATE.session?.token||'',
+        ...STATE.user,
         data:STATE.dia,
         estande:STATE.estande,
         ...STATE.formSel,
-        observacao:document.querySelector('#observacao')?.value||''
+
+        observacao:
+          document
+            .querySelector(
+              '#observacao'
+            )
+            ?.value ||
+          ''
       };
 
-      $('#btnEnviar').disabled=true;
-      $('#formMsg').className='muted';
-      $('#formMsg').textContent='Enviando...';
-      showLoader('Enviando avaliação...');
+      $('#btnEnviar').disabled =
+        true;
+
+      $('#formMsg').className =
+        'muted';
+
+      $('#formMsg').textContent =
+        'Enviando...';
+
+      showLoader(
+        'Enviando avaliação...'
+      );
 
       try{
-        const out=await apiPost(payload);
-        if(handleSessionError(out)) return;
+        const out =
+          await apiPost(
+            payload
+          );
 
         if(out.ok){
-          toast(`Avaliação enviada! Nota final: ${out.nota}`);
-          show('viewDias');
-          await loadDias(true);
-        }else{
-          $('#formMsg').className='err';
+          toast(
+            `Avaliação enviada! Nota final: ${out.nota}`
+          );
 
-          if(out.error==='already_evaluated'){
-            $('#formMsg').textContent='Este estande já recebeu uma avaliação.';
-            toast('Este estande já foi avaliado.',2400);
+          show('viewDias');
+
+          await loadDias();
+
+        }else{
+          $('#formMsg').className =
+            'err';
+
+          if(
+            out.error ===
+            'already_evaluated'
+          ){
+            $('#formMsg').textContent =
+              'Este estande já recebeu uma avaliação.';
+
+            toast(
+              'Este estande já foi avaliado.',
+              2400
+            );
 
             setTimeout(()=>{
-              show('viewEstandes');
-              loadEstandes(STATE.dia);
-            },700);
+              show(
+                'viewEstandes'
+              );
+
+              loadEstandes(
+                STATE.dia
+              );
+
+            }, 700);
+
           }else{
-            $('#formMsg').textContent=`Erro: ${out.error||'falha'}`;
-            $('#btnEnviar').disabled=false;
+            $('#formMsg').textContent =
+              `Erro: ${out.error || 'falha'}`;
+
+            $('#btnEnviar').disabled =
+              false;
           }
         }
 
       }catch(err){
-        $('#formMsg').className='err';
-        $('#formMsg').textContent='Falha de rede. Tente novamente.';
-        $('#btnEnviar').disabled=false;
+        $('#formMsg').className =
+          'err';
+
+        $('#formMsg').textContent =
+          'Falha de rede. Tente novamente.';
+
+        $('#btnEnviar').disabled =
+          false;
+
       }finally{
         hideLoader();
       }
@@ -1919,7 +2301,7 @@
           <p class="loader-desc" id="loaderText">Buscando informações...</p>
         </div>
       </div>
-      <div class="loader-bar" aria-hidden="true"><div id="loaderFill" class="loader-fill"></div></div>
+      <div class="loader-bar" aria-hidden="true"><div id="loaderFill" class="loader-fill"></div></div></div>
     </div>
   </div>
 
